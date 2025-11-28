@@ -16,4 +16,11 @@ describe('Testes E2E da API', () => {
       expect(error.response.status).toBe(404);
     }
   });
+    it('GET /status deve retornar status da API', async () => {
+        const response = await axios.get(`${BASE_URL}/status`);
+        expect(response.status).toBe(200);
+        expect(response.data).toHaveProperty('status', 'ok');
+        expect(response.data).toHaveProperty('uptime');
+        console.log(response.data)
+    });
 });
