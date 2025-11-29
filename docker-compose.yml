@@ -9,3 +9,23 @@ services:
       - "3000:3000"
     stdin_open: true
     tty: true
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/appdb?schema=public"
+
+  db:
+    image: postgres:17
+    container_name: neoway-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

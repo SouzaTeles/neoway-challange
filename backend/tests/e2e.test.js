@@ -16,6 +16,17 @@ describe('Testes E2E da API', () => {
       expect(error.response.status).toBe(404);
     }
   });
+
+    it('/POST should create a new document successfully', async () => {
+        let response = await axios.post(`${BASE_URL}/documents`, {
+            "document": "14335673000",
+            "type": "CPF"
+        });
+        expect(response.status).toBe(201);
+        expect(response.data).toHaveProperty('id');
+        expect(response.data).toHaveProperty('document');
+        expect(response.data).toHaveProperty('type');
+    });
     it('GET /status deve retornar status da API', async () => {
         const response = await axios.get(`${BASE_URL}/status`);
         expect(response.status).toBe(200);
