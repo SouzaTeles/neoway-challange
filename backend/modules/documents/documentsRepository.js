@@ -19,4 +19,11 @@ export class DocumentsRepository {
     async findById(id) {
         return prisma.document.findUnique({ where: { id } });
     }
+
+    async update(id, data) {
+        return prisma.document.update({
+            where: { id },
+            data,
+        });
+    }
 }
