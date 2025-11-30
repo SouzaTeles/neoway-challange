@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "cnpj-cpf-validator": "^1.0.4",
     "express": "^5.1.0",
-    "prisma": "^6.19.0"
+    "prisma": "^6.19.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "axios": "^1.13.2",
