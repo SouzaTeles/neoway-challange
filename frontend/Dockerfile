@@ -1,0 +1,5 @@
+FROM node:24-slim
+
+WORKDIR /app
+
+EXPOSE 8081
