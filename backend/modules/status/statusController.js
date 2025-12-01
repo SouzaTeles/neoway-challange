@@ -1,11 +1,12 @@
 import { formatUptime } from "./uptimeFormater.js";
-export function getStatus(req, res) {
+import { getRequestCount } from "./requestCounter.js";
 
+export function getStatus(req, res) {
     const uptimeInSeconds = process.uptime();
     const uptime = formatUptime(uptimeInSeconds);
+    const totalRequests = getRequestCount();
 
     return res.json({
-        consultas: 'ok',
-        uptime: uptime
-    }); 
+        uptime, totalRequests
+    });
 }

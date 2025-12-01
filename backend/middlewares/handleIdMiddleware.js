@@ -1,4 +1,4 @@
-export function handleId(schema) {
+export function handleIdMiddleware(schema) {
   return (req, res, next) => {
     const id = parseInt(req.params.id, 10);
     

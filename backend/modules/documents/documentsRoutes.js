@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import  documentsController  from "./documentsController.js";
-import { validate } from '../../middlewares/validate.js';
+import { validateSchemaMiddleware } from '../../middlewares/validateSchemaMiddleware.js';
 import { createDocumentDto } from './dtos/createDocumentDto.js';
 import { updateDocumentDto } from './dtos/updateDocumentDto.js';
-import { handleId } from '../../middlewares/handleId.js';
-import { errorHandler } from '../../middlewares/errorHandler.js';
+import { handleIdMiddleware } from '../../middlewares/handleIdMiddleware.js';
+import { errorHandlerMiddleware } from '../../middlewares/errorHandlerMiddleware.js';
 
 const router = Router();
 router.get('/', documentsController.listDocuments);
-router.get('/:id', handleId(), documentsController.getDocument);
-router.patch('/:id', handleId(), validate(updateDocumentDto), documentsController.updateDocument, errorHandler);
-router.post('/', validate(createDocumentDto), documentsController.registerDocument, errorHandler);
-router.delete('/:id', handleId(), documentsController.deleteDocument, errorHandler);
+router.get('/:id', handleIdMiddleware(), documentsController.getDocument);
+router.patch('/:id', handleIdMiddleware(), validateSchemaMiddleware(updateDocumentDto), documentsController.updateDocument, errorHandlerMiddleware);
+router.post('/', validateSchemaMiddleware(createDocumentDto), documentsController.registerDocument, errorHandlerMiddleware);
+router.delete('/:id', handleIdMiddleware(), documentsController.deleteDocument, errorHandlerMiddleware);
 export default router;
