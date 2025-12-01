@@ -13,6 +13,7 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://localhost:3000
+      - CHOKIDAR_USEPOLLING=true 
     stdin_open: true
     tty: true
   backend:
