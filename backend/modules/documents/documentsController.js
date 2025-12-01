@@ -3,10 +3,14 @@ import { DocumentsRepository } from './documentsRepository.js';
 const documentsRepository = new DocumentsRepository();
 
 export default {
-    registerDocument: async (req, res) => {
+    registerDocument: async (req, res, next) => {
         const { document, type, blocklisted } = req.body;
+        try {
         const createdDocument = await documentsRepository.create(document, type, blocklisted);
         return res.status(201).json(createdDocument);
+        } catch (error) {
+            next(error);
+        }
     },
     listDocuments: async (req, res) => {
         const documents = await documentsRepository.findAll();
@@ -20,13 +24,13 @@ export default {
         const updatedDocument = await documentsRepository.update(req.params.id, req.body);
         return res.json(updatedDocument);
     },
-    deleteDocument: async (req, res) => {
+    deleteDocument: async (req, res, next) => {
         const id = parseInt(req.params.id);
         try {
             await documentsRepository.delete(id);
             return res.status(204).send();
         } catch (error) {
-            return res.status(404).json({ message: 'Documento não encontrado' });
+            next(error);
         }
     },
     getDocument: async (req, res) => {
