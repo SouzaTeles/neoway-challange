@@ -1,10 +1,10 @@
-<script setup></script>
+<script setup>
+import AppHeader from './components/Header.vue';
+</script>
 
 <template>
   <main>
-    <header>
-      <h1>Sistema de documentos - teste</h1>
-    </header>
+    <AppHeader />
     <div class="container">
       <aside class="register-document">
         <h2>Cadastrar Documento</h2>
@@ -22,7 +22,6 @@
         <legend>Número do documento</legend>
         <input type="text" name="document" placeholder="000.000.000-00" />
         <button id="register" class="btn-blue">Cadastrar</button>
-
       </aside>
       <section class="list-document">
         <div class="filters">
@@ -103,15 +102,6 @@
   font-family: sans-serif;
 }
 
-header {
-  color: white;
-  height: 70px;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  font-family: sans-serif;
-  background-color: #1b1b96;
-}
 
 main {
   background: gainsboro;
@@ -128,10 +118,12 @@ main {
   margin: 12px 0;
   display: flex;
   flex-direction: row;
+
   label {
     display: flex;
     flex-direction: row;
     margin-right: 12px;
+
     input {
       margin-right: 8px;
     }
