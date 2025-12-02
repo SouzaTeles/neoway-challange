@@ -2,7 +2,6 @@ import prisma from '../../prisma/prisma.js';
 export class DocumentsRepository {
     async findByFilters(filters = {}) {
         const where = {};
-        console.log(filters);
         const {
             document,
             type,
