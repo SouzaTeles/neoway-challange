@@ -24,6 +24,8 @@
 <script>
 import { ref, computed } from 'vue'
 import { isValidCPF, isValidCNPJ } from "cnpj-cpf-validator";
+import { saveDocument } from "@/api/documents"
+
 
 const TYPE_CPF = "CPF";
 const TYPE_CNPJ = "CNPJ";
@@ -72,6 +74,19 @@ export default {
         documentInputRef.value.focus()
         return
       }
+      saveDocument(documentType.value, cleanNumber)
+        .then(() => {
+          alert('Documento cadastrado com sucesso!')
+          documentNumber.value = ''
+          documentInputRef.value.focus()
+        })
+        .catch(err => {
+          if (err.response?.data?.error) {
+            alert(err.response.data.error)
+            return
+          }
+          alert('Erro ao cadastrar documento. Tente novamente.')
+        })
     }
 
     return {
