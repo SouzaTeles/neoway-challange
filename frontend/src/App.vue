@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import AppHeader from './components/Header.vue';
+import AppHeader from './components/AppHeader.vue';
 import DocumentRegister from './components/DocumentRegister.vue';
 import DocumentList from './components/DocumentList.vue';
 import Login from './components/Login.vue';
@@ -10,13 +10,17 @@ const isAuthenticated = ref(false);
 const handleLoggedIn = () => {
 	isAuthenticated.value = true;
 };
+
+const handleLogout = () => {
+  isAuthenticated.value = false;
+};
 </script>
 
 <template>
   <main>
 		<Login v-if="!isAuthenticated" @logged-in="handleLoggedIn" />
 		<template v-else>
-			<AppHeader/>
+			<AppHeader @logout="handleLogout" />
 			<div class="container">
 				<DocumentRegister />
 				<DocumentList />

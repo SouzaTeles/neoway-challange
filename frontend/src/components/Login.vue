@@ -34,6 +34,7 @@ const handleSubmit = async (event) => {
         Senha
         <input type="password" v-model="password" required />
       </label>
+      <button class="btn-primary" type="submit">Entrar</button>
     </form>
   </div>
 </template>
