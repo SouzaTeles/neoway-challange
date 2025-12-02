@@ -27,7 +27,7 @@ const handleDocumentRegistered = () => {
 		<template v-else>
 			<AppHeader @logout="handleLogout" />
 			<div class="container">
-				<DocumentRegister @registered="handleDocumentRegistered" />
+				<DocumentRegister @registered="handleDocumentRegistered" class="grow-on-mobile"/>
 				<DocumentList :reload="reloadFlag" />
 			</div>
 		</template>
@@ -47,6 +47,7 @@ main {
 
 .container {
   display: flex;
+  gap: 20px;
   padding: 20px 0;
   justify-content: space-between;
 }

@@ -95,7 +95,7 @@ const registerDocument = () => {
 }
 
 .register-document {
-  width: 300px;
+  min-width: 300px;
   padding: 20px;
   display: flex;
   flex-direction: column;
