@@ -1,7 +1,7 @@
 <template>
   <aside class="register-document">
     <h2>Cadastrar Documento</h2>
-    <h3>Adicione um CPF ou CNPJ ao sistema</h3>
+    <h3 class="subtitle">Adicione um CPF ou CNPJ ao sistema</h3>
     <div class="options">
       <label>
         <input type="radio" name="documentType" value="CPF" v-model="documentType" @change="documentNumber = ''" />
@@ -17,7 +17,7 @@
       <input type="text" ref="documentInputRef" :key="documentType" v-model="documentNumber" v-mask="computedMask"
         :placeholder="placeholder" :maxlength="maxLength" @keyup.enter="registerDocument" />
     </label>
-    <button class="btn-blue" @click="registerDocument" :disabled="!isRegisterEnabled()">Cadastrar</button>
+    <button class="btn-primary" @click="registerDocument" :disabled="!isRegisterEnabled()">Cadastrar</button>
   </aside>
 </template>
 
@@ -105,20 +105,8 @@ export default {
 
 
 <style scoped>
-.btn-blue {
+.btn-primary {
   margin-top: 10px;
-  height: 56px;
-  background-color: #1b1b96;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: .3s;
-
-  &:disabled {
-    background-color: #A8A8D8;
-    cursor: not-allowed;
-  }
 }
 
 .register-document {
@@ -135,10 +123,7 @@ h2 {
   margin-bottom: 5px;
 }
 
-h3 {
-  color: #666;
-  font-size: 14px;
-  font-weight: normal;
+.subtitle {
   margin-bottom: 15px;
 }
 
