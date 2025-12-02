@@ -11,7 +11,7 @@ export async function saveDocument(documentType, documentNumber, blocklisted = f
   return response.data
 }
 
-export async function listDocuments() {
-  const response = await api.get("/documents")
+export async function listDocuments(filters = {}) {
+  const response = await api.get("/documents", { params: filters })
   return response.data
 }

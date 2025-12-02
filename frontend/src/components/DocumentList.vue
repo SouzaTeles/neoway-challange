@@ -4,13 +4,41 @@ import { listDocuments } from '@/api/documents'
 
 const documents = ref([])
 
+const type = ref('all')
+const search = ref('')
+const orderBy = ref('desc')
+const blocklisted = ref('all')
+
 async function fetchDocuments() {
+  const filters = {}
+
+  if (search.value) {
+    filters.document = search.value
+  }
+
+  if (type.value !== 'all') {
+    filters.type = type.value
+  }
+
+  if (blocklisted.value !== 'all') {
+    filters.blocklisted = blocklisted.value
+  }
+
+  if (orderBy.value) {
+    filters.orderBy = orderBy.value
+  }
+
   try {
-    documents.value = await listDocuments()
+    documents.value = await listDocuments(filters)
   } catch (err) {
     alert('Não foi possível carregar os documentos.')
     documents.value = []
   }
+}
+
+function handleSubmit(event) {
+  event.preventDefault()
+  fetchDocuments()
 }
 
 onMounted(() => {
@@ -20,14 +48,14 @@ onMounted(() => {
 
 <template>
   <section class="list-document">
-    <div class="filters">
+    <form class="filters" @submit="handleSubmit">
       <label for="search">
         Buscar:
-        <input type="text" name="search" id="search" placeholder="Buscar documento..." />
+        <input type="text" name="search" id="search" v-model="search" placeholder="Buscar documento..." />
       </label>
       <label for="type">
         Tipo:
-        <select name="type" id="type">
+        <select name="type" id="type" v-model="type">
           <option value="all">Todos</option>
           <option value="cpf">CPF</option>
           <option value="cnpj">CNPJ</option>
@@ -35,7 +63,7 @@ onMounted(() => {
       </label>
       <label for="blocklisted">
         Filtrar por bloqueio:
-        <select name="blocklisted" id="blocklisted">
+        <select name="blocklisted" id="blocklisted" v-model="blocklisted">
           <option value="all">Todos</option>
           <option value="true">Bloqueados</option>
           <option value="false">Não bloqueados</option>
@@ -43,12 +71,13 @@ onMounted(() => {
       </label>
       <label for="orderBy">
         Ordenar por:
-        <select name="orderBy" id="orderBy">
+        <select name="orderBy" id="orderBy" v-model="orderBy">
           <option value="desc">Mais recentes</option>
           <option value="asc">Mais antigos</option>
         </select>
       </label>
-    </div>
+      <button type="submit">Buscar</button>
+    </form>
     <div class="documents-list">
       <h2>Lista de Documentos</h2>
       <table>
