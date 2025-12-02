@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import  documentsController  from "./documentsController.js";
+import documentsController from "./documentsController.js";
 import { validateSchemaMiddleware } from '../../middlewares/validateSchemaMiddleware.js';
 import { listDocumentsDto } from './dtos/listDocumentsDto.js';
 import { updateDocumentDto } from './dtos/updateDocumentDto.js';

@@ -2,22 +2,44 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
 
+const api = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+});
+
 describe('Testes E2E da API', () => {
     let documentId;
     const documentData = {
         document: "14335673000",
         type: "CPF"
     };
+
+    beforeAll(async () => {
+        const response = await api.post('/auth/login', {
+            email: 'admin@example.com',
+            password: 'admin',
+        });
+
+        expect(response.status).toBe(200);
+
+        const setCookie = response.headers['set-cookie'];
+        expect(setCookie).toBeDefined();
+
+        const cookieHeader = setCookie[0];
+
+        api.defaults.headers.Cookie = cookieHeader;
+    });
+
     it('GET /inexistente should return 404 status', async () => {
         try {
-            await axios.get(`${BASE_URL}/inexistente`);
+            await api.get('/inexistente');
         } catch (error) {
             expect(error.response.status).toBe(404);
         }
     });
 
     it('POST /documents should create a new document successfully', async () => {
-        let response = await axios.post(`${BASE_URL}/documents`, documentData);
+        let response = await api.post('/documents', documentData);
         expect(response.status).toBe(201);
         expect(response.data).toHaveProperty('id');
         expect(response.data).toHaveProperty('document');
@@ -27,7 +49,7 @@ describe('Testes E2E da API', () => {
 
     it('POST /documents should return error when creating a duplicate document', async () => {
         try {
-            let response = await axios.post(`${BASE_URL}/documents`, documentData);
+            let response = await api.post('/documents', documentData);
             fail('Deveria ter lançado um erro 409');
         } catch (error) {
             expect(error.response.status).toBe(409);
@@ -36,13 +58,13 @@ describe('Testes E2E da API', () => {
     });
 
     it('GET /documents should return list of documents', async () => {
-        const response = await axios.get(`${BASE_URL}/documents`);
+        const response = await api.get('/documents');
         expect(response.status).toBe(200);
         expect(Array.isArray(response.data)).toBe(true);
     });
 
     it('GET /documents/:id should return a specific document', async () => {
-        response = await axios.get(`${BASE_URL}/documents/${documentId}`);
+        response = await api.get(`/documents/${documentId}`);
         expect(response.status).toBe(200);
         expect(response.data).toHaveProperty('id', documentId);
         expect(response.data).toHaveProperty('type', documentData.type);
@@ -53,22 +75,28 @@ describe('Testes E2E da API', () => {
     });
 
     it('PATCH /documents/:id should update an existing document', async () => {
-        response = await axios.patch(`${BASE_URL}/documents/${documentId}`, { blocklisted: true });
+        response = await api.patch(`/documents/${documentId}`, { blocklisted: true });
         expect(response.status).toBe(200);
         expect(response.data).toHaveProperty('blocklisted', true);
     });
 
     it('DELETE /documents/:id should delete an existing document', async () => {
-        response = await axios.delete(`${BASE_URL}/documents/${documentId}`);
+        response = await api.delete(`/documents/${documentId}`);
         expect(response.status).toBe(204);
     });
 
     it('GET /status deve retornar status da API', async () => {
-        const response = await axios.get(`${BASE_URL}/status`);
+        const response = await api.get('/status');
         expect(response.status).toBe(200);
         expect(response.data).toHaveProperty('uptime');
         expect(response.data).toHaveProperty('totalRequests');
         expect(typeof response.data.totalRequests).toBe('number');
+    });
+
+    it('POST /auth/logout should return 200 status', async () => {
+        const response = await api.post('/auth/logout');
+        expect(response.status).toBe(200);
+        expect(response.data).toHaveProperty('message', 'Logout realizado com sucesso');
     });
 
 });
