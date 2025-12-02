@@ -16,7 +16,9 @@
       Número do documento
       <input type="text" ref="documentInputRef" :key="documentType" v-model="documentNumber" v-mask="computedMask" :placeholder="placeholder" :maxlength="maxLength" @keyup.enter="registerDocument" />
     </label>
-    <button class="btn-primary" @click="registerDocument" :disabled="!isRegisterEnabled()">Cadastrar</button>
+    <button class="btn-primary" @click="registerDocument" :disabled="!isRegisterEnabled() || isLoading">
+      {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
   </aside>
 </template>
 
@@ -33,6 +35,7 @@ const emit = defineEmits(['registered'])
 const documentInputRef = ref(null)
 const documentType = ref('CPF')
 const documentNumber = ref('')
+const isLoading = ref(false)
 
 const computedMask = computed(() => {
   return documentType.value === TYPE_CPF ? '###.###.###-##' : '##.###.###/####-##'
@@ -72,6 +75,7 @@ const registerDocument = () => {
     return
   }
 
+  isLoading.value = true
   saveDocument(documentType.value, cleanNumber)
     .then(() => {
       alert('Documento cadastrado com sucesso!')
@@ -85,6 +89,9 @@ const registerDocument = () => {
         return
       }
       alert('Erro ao cadastrar documento. Tente novamente.')
+    })
+    .finally(() => {
+      isLoading.value = false
     })
 }
 </script>

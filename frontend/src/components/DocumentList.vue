@@ -10,6 +10,7 @@ const props = defineProps({
 })
 
 const documents = ref([])
+const isLoading = ref(false)
 
 const type = ref('all')
 const search = ref('')
@@ -17,6 +18,7 @@ const orderBy = ref('desc')
 const blocklisted = ref('all')
 
 async function fetchDocuments() {
+  isLoading.value = true
   const filters = {}
 
   if (search.value) {
@@ -40,6 +42,8 @@ async function fetchDocuments() {
   } catch (err) {
     alert('Não foi possível carregar os documentos.')
     documents.value = []
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -115,7 +119,9 @@ watch(
         </select>
       </label>
       <label class="form-group" for="">
-        <button type="submit" class="btn-primary btn-big btn-search">Buscar</button>
+        <button type="submit" class="btn-primary btn-big btn-search" :disabled="isLoading">
+          {{ isLoading ? 'Buscando...' : 'Buscar' }}
+        </button>
       </label>
     </form>
     <div class="list">

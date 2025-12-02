@@ -4,17 +4,21 @@ import { login } from '@/api/auth'
 
 const email = ref('')
 const password = ref('')
+const isLoading = ref(false)
 
 const emit = defineEmits(['logged-in'])
 
 const handleSubmit = async (event) => {
   event.preventDefault()
+  isLoading.value = true
 
   try {
     await login(email.value, password.value)
     emit('logged-in')
   } catch (err) {
     alert('Erro ao fazer login. Verifique as credenciais.')
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -34,7 +38,9 @@ const handleSubmit = async (event) => {
         Senha
         <input type="password" v-model="password" required />
       </label>
-      <button class="btn-primary" type="submit">Entrar</button>
+      <button class="btn-primary" type="submit" :disabled="isLoading">
+        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+      </button>
     </form>
   </div>
 </template>
