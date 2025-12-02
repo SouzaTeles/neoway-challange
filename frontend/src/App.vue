@@ -1,28 +1,13 @@
 <script setup>
 import AppHeader from './components/Header.vue';
+import DocumentRegister from './components/DocumentRegister.vue';
 </script>
 
 <template>
   <main>
     <AppHeader />
     <div class="container">
-      <aside class="register-document">
-        <h2>Cadastrar Documento</h2>
-        <h3>Adicione um CPF ou CNPJ ao sistema</h3>
-        <div class="options">
-          <label>
-            <input type="radio" name="documentType" value="CPF" checked />
-            CPF
-          </label>
-          <label>
-            <input type="radio" name="documentType" value="CNPJ" />
-            CNPJ
-          </label>
-        </div>
-        <legend>Número do documento</legend>
-        <input type="text" name="document" placeholder="000.000.000-00" />
-        <button id="register" class="btn-blue">Cadastrar</button>
-      </aside>
+      <DocumentRegister />
       <section class="list-document">
         <div class="filters">
           <label for="search">
@@ -185,21 +170,4 @@ select {
   }
 }
 
-.btn-blue {
-  height: 56px;
-  background-color: #1b1b96;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.register-document {
-  width: 300px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  background: white;
-}
 </style>
