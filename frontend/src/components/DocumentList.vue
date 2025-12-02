@@ -1,6 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { listDocuments, toggleBlocklist, deleteDocument } from '@/api/documents'
+
+const props = defineProps({
+  reload: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const documents = ref([])
 
@@ -68,6 +75,13 @@ const removeDocument = async (id) => {
 onMounted(() => {
     fetchDocuments()
 })
+
+watch(
+  () => props.reload,
+  () => {
+    fetchDocuments()
+  }
+)
 </script>
 
 <template>
@@ -100,7 +114,7 @@ onMounted(() => {
                     <option value="asc">Mais antigos</option>
                 </select>
             </label>
-            <button type="submit">Buscar</button>
+            <button type="submit" class="btn-primary">Buscar</button>
         </form>
         <div class="documents-list">
             <h2>Lista de Documentos</h2>

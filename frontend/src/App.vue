@@ -6,6 +6,7 @@ import DocumentList from './components/DocumentList.vue';
 import Login from './components/Login.vue';
 
 const isAuthenticated = ref(false);
+const reloadFlag = ref(false);
 
 const handleLoggedIn = () => {
 	isAuthenticated.value = true;
@@ -13,6 +14,10 @@ const handleLoggedIn = () => {
 
 const handleLogout = () => {
   isAuthenticated.value = false;
+};
+
+const handleDocumentRegistered = () => {
+  reloadFlag.value = !reloadFlag.value;
 };
 </script>
 
@@ -22,8 +27,8 @@ const handleLogout = () => {
 		<template v-else>
 			<AppHeader @logout="handleLogout" />
 			<div class="container">
-				<DocumentRegister />
-				<DocumentList />
+				<DocumentRegister @registered="handleDocumentRegistered" />
+				<DocumentList :reload="reloadFlag" />
 			</div>
 		</template>
   </main>
@@ -44,5 +49,12 @@ main {
   display: flex;
   padding: 20px 0;
   justify-content: space-between;
+}
+
+@media (max-width: 1010px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>
