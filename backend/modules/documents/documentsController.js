@@ -4,16 +4,16 @@ const documentsRepository = new DocumentsRepository();
 
 export default {
     registerDocument: async (req, res, next) => {
-        const { document, type, blocklisted } = req.body;
+        const { document, type, blocklisted } = req.validated;
         try {
-        const createdDocument = await documentsRepository.create(document, type, blocklisted);
-        return res.status(201).json(createdDocument);
+            const createdDocument = await documentsRepository.create(document, type, blocklisted);
+            return res.status(201).json(createdDocument);
         } catch (error) {
             next(error);
         }
     },
     listDocuments: async (req, res) => {
-        const documents = await documentsRepository.findAll();
+        const documents = await documentsRepository.findByFilters(req.validated);
         return res.json(documents);
     },
     updateDocument: async (req, res) => {
@@ -21,7 +21,7 @@ export default {
         if (!document) {
             return res.status(404).json({ message: 'Documento não encontrado' });
         }
-        const updatedDocument = await documentsRepository.update(req.params.id, req.body);
+        const updatedDocument = await documentsRepository.update(req.params.id, req.validated);
         return res.json(updatedDocument);
     },
     deleteDocument: async (req, res, next) => {

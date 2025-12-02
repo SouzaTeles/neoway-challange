@@ -1,6 +1,7 @@
-export function validateSchemaMiddleware(schema) {
+export function validateSchemaMiddleware(schema, query = false) {
   return (req, res, next) => {
-    const result = schema.safeParse(req.body);
+    const dataToValidate = query ? req.query : req.body;
+    const result = schema.safeParse(dataToValidate);
 
     if (!result.success) {
       return res.status(400).json({
