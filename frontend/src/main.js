@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import VueMask from '@devindex/vue-mask'
 
 import 'reset-css';
+import '@/assets/styles/global.scss';
 
 import App from './App.vue'
 import router from './router'
