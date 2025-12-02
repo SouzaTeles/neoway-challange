@@ -10,3 +10,8 @@ export async function saveDocument(documentType, documentNumber, blocklisted = f
   const response = await api.post("/documents", payload)
   return response.data
 }
+
+export async function listDocuments() {
+  const response = await api.get("/documents")
+  return response.data
+}
