@@ -93,7 +93,7 @@ watch(
     <form class="filters" @submit="handleFilter">
       <label class="form-group" for="search">
         Buscar:
-        <input type="text" name="search" id="search" v-model="search" placeholder="Buscar documento..." />
+        <input type="text" name="search" id="search" v-model="search" v-mask="'#'" maxlength="14" placeholder="Buscar documento..." />
       </label>
       <label class="form-group" for="type">
         Tipo:
