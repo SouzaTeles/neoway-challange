@@ -28,7 +28,6 @@ const handleSubmit = async (event) => {
     <form class="login-card" @submit="handleSubmit">
       <h2>Login</h2>
       <p class="subtitle">Entre para acessar o cadastro e a lista de documentos</p>
-
       <label>
         E-mail
         <input type="email" v-model="email" required />
