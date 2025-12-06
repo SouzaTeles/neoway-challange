@@ -8,10 +8,15 @@ const api = axios.create({
 });
 
 describe('Testes E2E da API', () => {
-    let documentId;
+    let documentId, documentIdCNPJ;
     const documentData = {
         document: "14335673000",
         type: "CPF"
+    };
+
+    const documentDataCNPJ = {
+        document: "00000000000191",
+        type: "CNPJ"
     };
 
     beforeAll(async () => {
@@ -47,6 +52,15 @@ describe('Testes E2E da API', () => {
         documentId = response.data.id;
     });
 
+    it('POST /documents (with CNPJ data) should create a new document successfully', async () => {
+        let response = await api.post('/documents', documentDataCNPJ);
+        expect(response.status).toBe(201);
+        expect(response.data).toHaveProperty('id');
+        expect(response.data).toHaveProperty('document');
+        expect(response.data).toHaveProperty('type');
+        documentIdCNPJ = response.data.id;
+    });
+
     it('POST /documents should return error when creating a duplicate document', async () => {
         try {
             let response = await api.post('/documents', documentData);
@@ -61,6 +75,37 @@ describe('Testes E2E da API', () => {
         const response = await api.get('/documents');
         expect(response.status).toBe(200);
         expect(Array.isArray(response.data)).toBe(true);
+    });
+
+    it('GET /documents?type=cpf should return CPF documents', async () => {
+        try {
+            const response = await api.get('/documents?type=cpf');
+            expect(response.status).toBe(200);
+            expect(Array.isArray(response.data)).toBe(true);
+            
+            response.data.forEach(doc => {
+                expect(doc.type).toBe('CPF');
+            });
+        } catch (error) {
+            console.log('Error response:', error.response.data);
+            console.log('Error status:', error.response.status);
+            throw error;
+        }
+    });
+
+    it('GET /documents?blocklisted=false should return non-blocklisted documents', async () => {
+        try {
+            const response = await api.get('/documents?blocklisted=false');
+            expect(response.status).toBe(200);
+            expect(Array.isArray(response.data)).toBe(true);
+            const documentIds = response.data.map(doc => doc.id);
+            expect(documentIds).toContain(documentId);
+            expect(documentIds).toContain(documentIdCNPJ);
+        } catch (error) {
+            console.log('Error response:', error.response.data);
+            console.log('Error status:', error.response.status);
+            throw error;
+        }
     });
 
     it('GET /documents/:id should return a specific document', async () => {
@@ -99,4 +144,11 @@ describe('Testes E2E da API', () => {
         expect(response.data).toHaveProperty('message', 'Logout realizado com sucesso');
     });
 
+    afterAll(async () => {
+        try {
+            await api.delete(`/documents/${documentIdCNPJ}`);
+        } catch (error) {
+            console.error(`Erro ao remover documento ${documentIdCNPJ}:`, error.response.data);
+        }
+    });
 });
