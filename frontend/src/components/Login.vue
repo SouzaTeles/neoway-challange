@@ -1,12 +1,19 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { login } from '@/api/auth'
+import { authService } from '@/services/auth.js'
 
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
 
-const emit = defineEmits(['logged-in'])
+onMounted(() => {
+  if (authService.isAuthenticated()) {
+    router.push('/')
+  }
+})
 
 const handleSubmit = async (event) => {
   event.preventDefault()
@@ -14,7 +21,8 @@ const handleSubmit = async (event) => {
 
   try {
     await login(email.value, password.value)
-    emit('logged-in')
+    authService.setAuthenticated()
+    router.push('/')
   } catch (err) {
     alert('Erro ao fazer login. Verifique as credenciais.')
   } finally {
