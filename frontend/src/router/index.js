@@ -16,6 +16,10 @@ const router = createRouter({
       name: 'documents',
       component: Documents,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ],
 })
