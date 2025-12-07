@@ -8,15 +8,23 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { logout } from '@/api/auth';
+import { authService } from '@/services/auth.js';
 
-const emit = defineEmits(['logout']);
+const router = useRouter()
+
 const handleLogout = async (event) => {
   event.preventDefault()
 
+  if (!confirm('Tem certeza que deseja sair?')) {
+    return
+  }
+
   try {
     await logout()
-    emit('logout')
+    authService.setUnauthenticated()
+    router.push('/login')
   } catch (err) {
     alert('Erro ao fazer logout.')
   }
