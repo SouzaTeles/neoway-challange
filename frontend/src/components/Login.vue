@@ -53,22 +53,25 @@ const handleSubmit = async (event) => {
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/styles/variables.scss';
+
 .login-wrapper {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: gainsboro;
+  background: $gray-200;
 }
 
 .login-card {
-  background: white;
+  background: $white;
   padding: 32px 28px;
-  border-radius: 6px;
+  border-radius: $card-radius;
   min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: $shadow-md;
 }
 
 h2 {
@@ -89,11 +92,11 @@ label {
 input {
   height: 40px;
   padding: 0 12px;
-  border-radius: 6px;
-  border: 1px solid #d0d0d0;
+  border-radius: $card-radius;
+  border: 1px solid $gray-400;
 
   &:focus-visible {
-    outline: #4546cc 2px solid;
+    outline: $primary 2px solid;
   }
 }
 

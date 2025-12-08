@@ -1,26 +1,23 @@
+@import './variables.scss';
+
 .btn-primary {
-  background-color: #4546cc;
-  color: #fff;
+  background-color: $primary;
+  color: $white;
   font-weight: 600;
-  border: none;
-  border-radius: 6px;
+  border-radius: $card-radius;
   cursor: pointer;
   transition: .3s;
-  height: 40px;
-  padding: 0 16px;
+  padding: 10px 16px;
+  border: solid 1px currentColor;
 
   &:hover:not(:disabled) {
-    background-color: #3737a8;
+    background-color: $primary-hover;
   }
 
   &:disabled {
-    background-color: #a8a8d8;
+    background-color: $primary-disabled;
     cursor: not-allowed;
   }
-}
-
-.btn-big {
-  height: 56px;
 }
 
 .container {

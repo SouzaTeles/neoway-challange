@@ -31,16 +31,18 @@ const handleLogout = async (event) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/styles/variables.scss';
+
 header {
-  color: white;
+  color: $white;
   width: 100%;
   height: 70px;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
   font-family: sans-serif;
-  background-color: #1b1b96;
+  background-color: $primary;
 }
 
 h1 {
@@ -56,11 +58,12 @@ h1 {
 
 button {
   background: none;
-  color: white;
   border: none;
+  color: $white;
   cursor: pointer;
+  font-size: 16px;
 
-  &::hover {
+  &:hover {
     text-decoration: underline;
   }
 }

@@ -11,6 +11,7 @@ const props = defineProps({
 
 const documents = ref([])
 const isLoading = ref(false)
+const showMenu = ref(null)
 
 const type = ref('all')
 const search = ref('')
@@ -76,6 +77,18 @@ const removeDocument = async (id) => {
   }
 }
 
+const toggleMenu = (id) => {
+  if (showMenu.value === id) {
+    showMenu.value = null
+  } else {
+    showMenu.value = id
+  }
+}
+
+const closeMenu = () => {
+  showMenu.value = null
+}
+
 onMounted(() => {
   fetchDocuments()
 })
@@ -83,6 +96,7 @@ onMounted(() => {
 watch(
   () => props.reload,
   () => {
+    showMenu.value = null
     fetchDocuments()
   }
 )
@@ -93,7 +107,8 @@ watch(
     <form class="filters" @submit="handleFilter">
       <label class="form-group" for="search">
         Buscar:
-        <input type="text" name="search" id="search" v-model="search" v-mask="'#'" maxlength="14" placeholder="Buscar documento..." />
+        <input type="text" name="search" id="search" v-model="search" v-mask="'#'" maxlength="14"
+          placeholder="Buscar documento..." />
       </label>
       <label class="form-group" for="type">
         Tipo:
@@ -119,7 +134,7 @@ watch(
         </select>
       </label>
       <label class="form-group" for="">
-        <button type="submit" class="btn-primary btn-big btn-search" :disabled="isLoading">
+        <button type="submit" class="btn-primary btn-search" :disabled="isLoading">
           {{ isLoading ? 'Buscando...' : 'Buscar' }}
         </button>
       </label>
@@ -146,9 +161,15 @@ watch(
             <td>{{ doc.blocklisted ? 'Bloqueado' : 'Ativo' }}</td>
             <td>{{ new Date(doc.createdAt).toLocaleDateString('pt-BR') }}</td>
             <td>
-              <button @click="toggleBlockDocument(doc.id, !doc.blocklisted)">{{ doc.blocklisted ?
-                'Desbloquear' : 'Bloquear' }}</button>
-              <button @click="removeDocument(doc.id)">Excluir</button>
+              <div class="dropdown" @blur="closeMenu">
+                <button class="dropdown-btn" @click="toggleMenu(doc.id)">⋯</button>
+                <div v-if="showMenu === doc.id" class="dropdown-menu">
+                  <button @click.stop="toggleBlockDocument(doc.id, !doc.blocklisted)">
+                    {{ doc.blocklisted ? 'Desbloquear' : 'Bloquear' }}
+                  </button>
+                  <button @click.stop="removeDocument(doc.id)">Excluir</button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -160,6 +181,8 @@ watch(
 
 
 <style scoped lang="scss">
+@import '@/assets/styles/variables.scss';
+
 .document-list {
   flex: 1;
   width: 100%;
@@ -172,30 +195,63 @@ watch(
   gap: 20px;
   justify-content: space-between;
   margin-bottom: 20px;
+  background: $white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: $shadow-md;
+  border-radius: $card-radius;
 }
 
 table {
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-  background: white;
-  border-radius: 6px;
-  overflow: hidden;
+  background: $white;
+  border-radius: $card-radius;
+  box-shadow: $shadow-md;
+}
+
+tr {
+  border-bottom: 1px solid $border-color;
+}
+
+thead th {
+  &:first-child {
+    border-top-left-radius: $card-radius;
+  }
+
+  &:last-child {
+    border-top-right-radius: $card-radius;
+  }
 }
 
 th,
 td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 th {
-  background-color: #f5f5f5;
+  background-color: $gray-100;
 }
 
-tbody tr:hover {
-  background-color: #f9f9f9;
+tbody {
+  tr {
+    &:last-child {
+      border-bottom: none;
+      td:first-child {
+        border-bottom-left-radius: $card-radius;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: $card-radius;
+      }
+    }
+
+    &:hover {
+      background-color: $gray-50;
+    }
+  }
 }
 
 .form-group {
@@ -208,15 +264,14 @@ input[type="text"],
 select {
   width: 100%;
   margin-top: 8px;
-  height: 56px;
   box-sizing: border-box;
-  padding: 0 16px;
-  background-color: #f2f5fc;
+  padding: 10px 16px;
+  background-color: $bg-primary;
   border: none;
-  border-radius: 6px;
+  border-radius: $card-radius;
 
   &:focus-visible {
-    outline: #4546cc 2px solid;
+    outline: $primary 2px solid;
   }
 }
 
@@ -230,8 +285,53 @@ select {
   }
 
   .list {
-    overflow: hidden;
+    overflow: visible;
     overflow-x: scroll;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+.dropdown-btn {
+  transform: rotate(90deg);
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: $white;
+  border: 1px solid $gray-400;
+  border-radius: 4px;
+  box-shadow: $shadow-md;
+  z-index: 1000;
+  min-width: 120px;
+
+  button {
+    width: 100%;
+    padding: 8px 12px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray-100;
+    }
   }
 }
 </style>
