@@ -66,11 +66,12 @@ const handleSubmit = async (event) => {
 .login-card {
   background: $white;
   padding: 32px 28px;
-  border-radius: 6px;
+  border-radius: $card-radius;
   min-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: $shadow-md;
 }
 
 h2 {
@@ -91,7 +92,7 @@ label {
 input {
   height: 40px;
   padding: 0 12px;
-  border-radius: 6px;
+  border-radius: $card-radius;
   border: 1px solid $gray-400;
 
   &:focus-visible {

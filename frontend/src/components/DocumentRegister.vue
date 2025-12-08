@@ -14,7 +14,8 @@
     </div>
     <label class="document-input">
       Número do documento
-      <input type="text" ref="documentInputRef" :key="documentType" v-model="documentNumber" v-mask="computedMask" :placeholder="placeholder" :maxlength="maxLength" @keyup.enter="registerDocument" />
+      <input type="text" ref="documentInputRef" :key="documentType" v-model="documentNumber" v-mask="computedMask"
+        :placeholder="placeholder" :maxlength="maxLength" @keyup.enter="registerDocument" />
     </label>
     <button class="btn-primary" @click="registerDocument" :disabled="!isRegisterEnabled() || isLoading">
       {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
@@ -100,18 +101,19 @@ const registerDocument = () => {
 @import '@/assets/styles/variables.scss';
 
 .register-wrapper {
+  background: $gray-50;
   flex: 1;
   padding: 20px;
-  background: $gray-50;
 }
 
 .register-document {
-  min-width: 300px;
+  min-width: min(100%, 300px);
   padding: 20px;
   display: flex;
   flex-direction: column;
   border-radius: 8px;
   background: $white;
+  box-shadow: $shadow-md;
 }
 
 h2 {
@@ -135,6 +137,10 @@ input[type="text"] {
   padding: 10px 12px;
   border: 1px solid $gray-400;
   border-radius: 4px;
+
+  &:focus-visible {
+    outline: $primary 2px solid;
+  }
 }
 
 .btn-primary {

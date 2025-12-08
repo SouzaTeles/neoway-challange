@@ -107,7 +107,8 @@ watch(
     <form class="filters" @submit="handleFilter">
       <label class="form-group" for="search">
         Buscar:
-        <input type="text" name="search" id="search" v-model="search" v-mask="'#'" maxlength="14" placeholder="Buscar documento..." />
+        <input type="text" name="search" id="search" v-model="search" v-mask="'#'" maxlength="14"
+          placeholder="Buscar documento..." />
       </label>
       <label class="form-group" for="type">
         Tipo:
@@ -133,7 +134,7 @@ watch(
         </select>
       </label>
       <label class="form-group" for="">
-        <button type="submit" class="btn-primary btn-big btn-search" :disabled="isLoading">
+        <button type="submit" class="btn-primary btn-search" :disabled="isLoading">
           {{ isLoading ? 'Buscando...' : 'Buscar' }}
         </button>
       </label>
@@ -194,6 +195,11 @@ watch(
   gap: 20px;
   justify-content: space-between;
   margin-bottom: 20px;
+  background: $white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: $shadow-md;
+  border-radius: $card-radius;
 }
 
 table {
@@ -201,22 +207,51 @@ table {
   margin-top: 10px;
   border-collapse: collapse;
   background: $white;
-  border-radius: 6px;
+  border-radius: $card-radius;
+  box-shadow: $shadow-md;
+}
+
+tr {
+  border-bottom: 1px solid $border-color;
+}
+
+thead th {
+  &:first-child {
+    border-top-left-radius: $card-radius;
+  }
+
+  &:last-child {
+    border-top-right-radius: $card-radius;
+  }
 }
 
 th,
 td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid $border-color;
 }
 
 th {
   background-color: $gray-100;
 }
 
-tbody tr:hover {
-  background-color: $gray-50;
+tbody {
+  tr {
+    &:last-child {
+      border-bottom: none;
+      td:first-child {
+        border-bottom-left-radius: $card-radius;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: $card-radius;
+      }
+    }
+
+    &:hover {
+      background-color: $gray-50;
+    }
+  }
 }
 
 .form-group {
@@ -229,12 +264,11 @@ input[type="text"],
 select {
   width: 100%;
   margin-top: 8px;
-  height: 56px;
   box-sizing: border-box;
-  padding: 0 16px;
+  padding: 10px 16px;
   background-color: $bg-primary;
   border: none;
-  border-radius: 6px;
+  border-radius: $card-radius;
 
   &:focus-visible {
     outline: $primary 2px solid;
@@ -251,6 +285,7 @@ select {
   }
 
   .list {
+    overflow: visible;
     overflow-x: scroll;
   }
 }
@@ -269,7 +304,7 @@ select {
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
-  
+
   &:hover {
     background-color: $gray-200;
   }
@@ -285,7 +320,7 @@ select {
   box-shadow: $shadow-md;
   z-index: 1000;
   min-width: 120px;
-  
+
   button {
     width: 100%;
     padding: 8px 12px;
@@ -293,6 +328,7 @@ select {
     border: none;
     background: none;
     cursor: pointer;
+
     &:hover {
       background-color: $gray-100;
     }
