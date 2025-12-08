@@ -96,9 +96,13 @@ const registerDocument = () => {
 }
 </script>
 
-<style scoped>
-.btn-primary {
-  margin-top: 10px;
+<style scoped lang="scss">
+@import '@/assets/styles/variables.scss';
+
+.register-wrapper {
+  flex: 1;
+  padding: 20px;
+  background: $gray-50;
 }
 
 .register-document {
@@ -107,11 +111,11 @@ const registerDocument = () => {
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  background: white;
+  background: $white;
 }
 
 h2 {
-  color: #1b1b96;
+  color: $primary;
   margin-bottom: 5px;
 }
 
@@ -129,7 +133,11 @@ h2 {
 
 input[type="text"] {
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid $gray-400;
   border-radius: 4px;
+}
+
+.btn-primary {
+  margin-top: 10px;
 }
 </style>
